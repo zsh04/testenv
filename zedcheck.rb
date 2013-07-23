@@ -1,18 +1,19 @@
 #!/usr/bin/env ruby
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
-#require 'sensu-plugin/check/cli'
+require 'sensu-plugin/check/cli'
 require 'json'
 require 'net/http'
 require 'openssl'
 require 'mixlib/cli'
+require 'pp'
 
-#class ZedCheck < Sensu::Plugin::Check::CLI
-class ZedCheck 
-  include Mixlib::CLI
+class ZedCheck < Sensu::Plugin::Check::CLI
+#class ZedCheck 
+#  include Mixlib::CLI
 
 option :host,
-  :short => "-h HOST",
+  :short => "-H HOST",
   :long => "--host HOST",
   :description => "HOST to check zstat output",
   :default => "localhost"
@@ -27,22 +28,20 @@ option :host,
     :short => "-P PATH",
     :long => "--path PATH",
     :description => "PATH to check zstat output",
-    :default => "/spiky-bangle/zstat"
+    #:default => "/spiky-bangle/stat",
+    :default => nil
 
   option :user,
-    :short => "-u USER",
     :long => "--user USER",
     :description => "User if HTTP Basic is used",
     :default => nil
 
   option :password,
-    :short => "-p USER",
     :long => "--password USER",
     :description => "Password if HTTP Basic is used",
     :default => nil
 
   option :header,
-    :short => "-H value",
     :long => "--header value",
     :description => "Addition header to include in request",
     :default => nil
@@ -56,37 +55,50 @@ option :host,
   option :ssl,
     :short => "-s",
     :boolean => true, 
-    :description => "Use ssl"
+    :description => "Use ssl when connecting"
 
   option :debug,
     :short => "-d",
     :boolean => true, 
     :description => "Debug mode"
 
+  option :scheme,
+    :description => "Metric naming scheme, text to prepend to .$parent.$child",
+    :long => "--scheme SCHEME",
+    :default => "#{Socket.gethostname}"
+
   option :help,
-    :show_options => true,
     :long => "--help",
     :description => "Show this message",
     :on => :tail,
+    :show_options => true,
     :boolean => true,
     :exit => 0
   
   def run
-    timestamp = Time.now.to_i
     stats = Hash.new
     value = JSON.parse get_mod_status
-     get_mod_status
     value.each do |k,v|
         stats[k] = v
     end
     metrics = {
-      :zstat=> stats
+      :zcheck=> stats
     }
-    metrics.each do |parent, children|
-      children.each do |child, value|
-        output [config[:scheme], parent, child].join("."), value, timestamp
-      end
-    end
+    # output ALL metrics
+    #metrics.each do |parent, children|
+    #  children.each do |child, value|
+    #    puts [parent, child].join("."), value
+    #  end
+    #end
+    wl_scanner_cycle_lastFinish = metrics[:zcheck]['wl.scanner.cycle']['lastFinish']
+    wl_scanner_read_failure_count_lastFinish = metrics[:zcheck]['wl.scanner.read.failure.count']['lastFinish']
+    puts wl_scanner_cycle_lastFinish 
+    puts wl_scanner_read_failure_count_lastFinish
+
+    # wl.scanner.cycle/lastFinish date is older that one hour from now: this will detect scanner hanging
+    #timestamp = Time.now.to_i
+    # wl.scanner.read.failure.count/lastFinish time is newer than wl.scanner.cycle/lastFinish date: this will signal for new read errors
+
     ok # return ok
   end
   
@@ -120,10 +132,22 @@ option :host,
       else
           critical "Error: #{res.code}"
       end
-    puts 'then end of get_mod_status'
   end
 
 end # end of class
 
-z = ZedCheck()
-z.run
+# ARGV = [ '-c', 'foo.rb', '-l', 'debug' ]
+
+#z = ZedCheck.new()
+#z.parse_options
+#z.config[:host]
+#z.config[:port]
+#z.config[:path]
+#z.config[:user] 
+#z.config[:password] 
+#z.config[:header] 
+#z.config[:header_value] 
+#z.config[:ssl] 
+#z.config[:debug] 
+#z.config[:help] 
+#z.run
