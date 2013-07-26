@@ -5,12 +5,8 @@ require 'sensu-plugin/check/cli'
 require 'json'
 require 'net/http'
 require 'openssl'
-require 'mixlib/cli'
-require 'pp'
 
 class ZedCheck < Sensu::Plugin::Check::CLI
-#class ZedCheck 
-#  include Mixlib::CLI
 
 option :host,
   :short => "-H HOST",
@@ -28,7 +24,6 @@ option :host,
     :short => "-P PATH",
     :long => "--path PATH",
     :description => "PATH to check zstat output",
-    #:default => "/spiky-bangle/stat",
     :default => nil
 
   option :user,
@@ -76,32 +71,49 @@ option :host,
     :exit => 0
   
   def run
+    timestamp = Time.now.to_i
     stats = Hash.new
     value = JSON.parse get_mod_status
     value.each do |k,v|
         stats[k] = v
     end
-    metrics = {
-      :zcheck=> stats
+    @metrics = {
+      'zcheck'=> stats
     }
-    # output ALL metrics
-    #metrics.each do |parent, children|
-    #  children.each do |child, value|
-    #    puts [parent, child].join("."), value
-    #  end
-    #end
-    wl_scanner_cycle_lastFinish = metrics[:zcheck]['wl.scanner.cycle']['lastFinish']
-    wl_scanner_read_failure_count_lastFinish = metrics[:zcheck]['wl.scanner.read.failure.count']['lastFinish']
-    puts wl_scanner_cycle_lastFinish 
-    puts wl_scanner_read_failure_count_lastFinish
 
-    # wl.scanner.cycle/lastFinish date is older that one hour from now: this will detect scanner hanging
-    #timestamp = Time.now.to_i
-    # wl.scanner.read.failure.count/lastFinish time is newer than wl.scanner.cycle/lastFinish date: this will signal for new read errors
-
-    ok # return ok
+    scanner_cycle_finish = get_metric_if_exists('wl.scanner.cycle','lastFinishSec')
+    scanner_read_failure = get_metric_if_exists('wl.scanner.read.failure.count','lastFinishSec')
+   
+    if scanner_cycle_finish
+      # wl.scanner.cycle/lastFinishSec date is older that one hour from now: this will detect scanner hanging
+      if (timestamp - 3600) > scanner_cycle_finish
+        msg = "Scanner finish time is older than one hour: The scanner may be hung."
+        critical msg
+      else
+        if config[:debug]
+          puts "#{timestamp} - 3600 > #{scanner_cycle_finish}" 
+        end
+      end
+    elsif (scanner_read_failure and scanner_cycle_finish)
+      # wl.scanner.read.failure.count/lastFinish time is newer than wl.scanner.cycle/lastFinish date: this will signal for new read errors
+      if scanner_read_failure > scanner_cycle_finish
+        msg = "Scanner read failure finish time is newer that scanner finish time: There may be read errors."
+        critical msg
+      else
+        if config[:debug]
+          puts "#{scanner_read_failure} > #{scanner_cycle_finish}" 
+        end
+      end 
+    end
+    ok #return ok
   end
-  
+
+  def get_metric_if_exists(metric_name,value_name)
+    if @metrics['zcheck'][metric_name]
+       @metrics['zcheck'][metric_name][value_name]
+    end
+  end
+
   def get_mod_status
       http = Net::HTTP.new(config[:host], config[:port])
       req = Net::HTTP::Get.new(config[:path])
@@ -133,21 +145,4 @@ option :host,
           critical "Error: #{res.code}"
       end
   end
-
 end # end of class
-
-# ARGV = [ '-c', 'foo.rb', '-l', 'debug' ]
-
-#z = ZedCheck.new()
-#z.parse_options
-#z.config[:host]
-#z.config[:port]
-#z.config[:path]
-#z.config[:user] 
-#z.config[:password] 
-#z.config[:header] 
-#z.config[:header_value] 
-#z.config[:ssl] 
-#z.config[:debug] 
-#z.config[:help] 
-#z.run
