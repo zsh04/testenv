@@ -77,35 +77,39 @@ option :host,
     value.each do |k,v|
         stats[k] = v
     end
+    exitStatus = 0
     @metrics = {
       'zcheck'=> stats
     }
 
     scanner_cycle_finish = get_metric_if_exists('wl.scanner.cycle','lastFinishSec')
     scanner_read_failure = get_metric_if_exists('wl.scanner.read.failure.count','lastFinishSec')
+
+    if config[:debug] == true
+      p "#{timestamp} - 3600 > #{scanner_cycle_finish}" 
+      p "#{scanner_read_failure} > #{scanner_cycle_finish}" 
+    end
    
     if scanner_cycle_finish
       # wl.scanner.cycle/lastFinishSec date is older that one hour from now: this will detect scanner hanging
       if (timestamp - 3600) > scanner_cycle_finish
-        msg = "Scanner finish time is older than one hour: The scanner may be hung."
-        critical msg
-      else
-        if config[:debug]
-          puts "#{timestamp} - 3600 > #{scanner_cycle_finish}" 
-        end
+        p "Scanner finish time is older than one hour: The scanner may be hung."
+        exitStatus += 1
       end
-    elsif (scanner_read_failure and scanner_cycle_finish)
+    end
+    if (scanner_read_failure and scanner_cycle_finish)
       # wl.scanner.read.failure.count/lastFinish time is newer than wl.scanner.cycle/lastFinish date: this will signal for new read errors
       if scanner_read_failure > scanner_cycle_finish
-        msg = "Scanner read failure finish time is newer that scanner finish time: There may be read errors."
-        critical msg
-      else
-        if config[:debug]
-          puts "#{scanner_read_failure} > #{scanner_cycle_finish}" 
-        end
+        p "Scanner read failure finish time is newer that scanner finish time: There may be read errors."
+        exitStatus += 1
       end 
     end
-    ok #return ok
+
+    unless exitStatus.nonzero?
+      ok #return ok
+    else
+      exit exitStatus
+    end
   end
 
   def get_metric_if_exists(metric_name,value_name)
@@ -123,15 +127,12 @@ option :host,
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
-
       if config[:debug] == true
         http.set_debug_output($stdout)
       end
-  
       if (config[:user] != nil and config[:password] != nil)
         req.basic_auth config[:user], config[:password]
       end
-  
       if (config[:header] != nil and config[:header_value] != nil)
         req.add_field config[:header], config[:header_value]
       end
