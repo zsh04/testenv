@@ -1,30 +1,42 @@
 #!/usr/bin/env ruby
 
+# PubApi monitoring tool
+# ===
+#
+# DESCRIPTION:
+#   This plugin uses net/http to connect to a host and get json formatted stats. 
+#   Logic will then be applied and one of two exit codes will be set based on the results.
+#   Messages will be sent along with the alert to identify the problem.
+#   
+# USAGE:
+#
+#   To see a list of options use ./pubapicheck.rb -h
+
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
 require 'json'
 require 'net/http'
 require 'openssl'
 
-class ZedCheck < Sensu::Plugin::Check::CLI
+class PubApiCheck < Sensu::Plugin::Check::CLI
 
-option :host,
-  :short => "-H HOST",
-  :long => "--host HOST",
-  :description => "HOST to check zstat output",
-  :default => "localhost"
+  option :host,
+    :short => "-H HOST",
+    :long => "--host HOST",
+    :description => "HOST to get zstats from",
+    :default => "localhost"
 
   option :port,
     :short => "-p PORT",
     :long => "--port PORT",
-    :description => "Port to check zstat output",
-    :default => "8080"
+    :description => "Port to connect to",
+    :default => "443"
 
   option :path,
     :short => "-P PATH",
     :long => "--path PATH",
-    :description => "PATH to check zstat output",
-    :default => nil
+    :description => "PATH to zstats",
+    :default => "/publicapi-v1/zstats"
 
   option :user,
     :long => "--user USER",
@@ -39,7 +51,7 @@ option :host,
   option :header,
     :long => "--header value",
     :description => "Addition header to include in request",
-    :default => nil
+    :default => "X-NG-PAK"
 
   option :header_value,
     :short => "-v value",
@@ -50,17 +62,14 @@ option :host,
   option :ssl,
     :short => "-s",
     :boolean => true, 
-    :description => "Use ssl when connecting"
+    :description => "Use ssl when connecting",
+    :default => true
 
   option :debug,
     :short => "-d",
     :boolean => true, 
-    :description => "Debug mode"
-
-  option :scheme,
-    :description => "Metric naming scheme, text to prepend to .$parent.$child",
-    :long => "--scheme SCHEME",
-    :default => "#{Socket.gethostname}"
+    :description => "Debug mode",
+    :default => false
 
   option :help,
     :long => "--help",
@@ -73,78 +82,90 @@ option :host,
   
   def run
     timestamp = Time.now.to_i
-    stats = Hash.new
-    value = JSON.parse get_mod_status
-    value.each do |k,v|
-        stats[k] = v
-    end
     exitStatus = 0
-    @metrics = {
-      'zcheck'=> stats
+    stats = {}
+    msg = []
+
+    value = JSON.parse getJsonfromApi # call the api and slurp all results
+    value.each do
+      |k,v| stats[k] = v
+    end
+    @apiMetrics = {
+      'pubapi'=> stats
     }
 
-    scanner_cycle_finish = get_metric_if_exists('wl.scanner.cycle','lastFinishSec')
-    scanner_read_failure = get_metric_if_exists('wl.scanner.read.failure.count','lastFinishSec')
+    # find the stats for specific metrics in the apiMetrics hash
+    scannerCyclefinish = getMetricifExists('wl.scanner.cycle','lastFinishSec') # this attr does not appear in the json until the scanner succeeds for the first time
+    scannerReadfailure = getMetricifExists('wl.scanner.read.failure.count','lastFinishSec') # scannerReadfailure does not exist until the condition has occured at least once
 
     if config[:debug] == true
-      p "#{timestamp} - 3600 > #{scanner_cycle_finish}" 
-      p "#{scanner_read_failure} > #{scanner_cycle_finish}" 
+      p "scannerCyclefinish = #{scannerCyclefinish}"
+      p "scannerReadfailure = #{scannerReadfailure}"
     end
-   
-    if scanner_cycle_finish
-      # wl.scanner.cycle/lastFinishSec date is older that one hour from now: this will detect scanner hanging
-      if (timestamp - 3600) > scanner_cycle_finish
-        p "Scanner finish time is older than one hour: The scanner may be hung."
-        exitStatus += 1
-      end
-    end
-    if (scanner_read_failure and scanner_cycle_finish)
-      # wl.scanner.read.failure.count/lastFinish time is newer than wl.scanner.cycle/lastFinish date: this will signal for new read errors
-      if scanner_read_failure > scanner_cycle_finish
-        p "Scanner read failure finish time is newer that scanner finish time: There may be read errors."
-        exitStatus += 1
-      end 
-    end
-
-    unless exitStatus.nonzero?
-      ok #return ok
-    else
-      exit exitStatus
-    end
-  end
-
-  def get_metric_if_exists(metric_name,value_name)
-    if @metrics['zcheck'][metric_name]
-       @metrics['zcheck'][metric_name][value_name]
-    end
-  end
-
-  def get_mod_status
-      http = Net::HTTP.new(config[:host], config[:port])
-      req = Net::HTTP::Get.new(config[:path])
-      req.add_field 'User-Agent', 'Sensu-Monitoring-Plugin'
-
-      if config[:ssl] == true
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      end
-      if config[:debug] == true
-        http.set_debug_output($stdout)
-      end
-      if (config[:user] != nil and config[:password] != nil)
-        req.basic_auth config[:user], config[:password]
-      end
-      if (config[:header] != nil and config[:header_value] != nil)
-        req.add_field config[:header], config[:header_value]
-      end
-      
-      res = http.request(req) # do the work
   
-      case res.code
-      when "200"
-          res.body
-      else
-          critical "Error: #{res.code}"
+    # assay section
+    if scannerCyclefinish 
+      if (timestamp - 3600) > scannerCyclefinish
+        msg << 'Scanner finish time is older than one hour: The scanner may be hung.'
+        exitStatus += 1
       end
+    end
+    if (scannerReadfailure and scannerCyclefinish)
+      if scannerReadfailure > scannerCyclefinish
+        msg << 'Scanner read failure finish time is newer that scanner finish time: There may be read errors.'
+        exitStatus += 1
+      end
+    end
+    # assay end
+
+    # exit status logic
+    unless exitStatus.nonzero?
+      ok
+    else
+      critical message(msg.to_s)
+    end
+  end
+
+  def getMetricifExists(metric_name,attr_name)
+    if @apiMetrics['pubapi'][metric_name]
+       @apiMetrics['pubapi'][metric_name][attr_name]
+    end
+  end
+
+  def getJsonfromApi
+    http = Net::HTTP.new(config[:host], config[:port])
+    req = Net::HTTP::Get.new(config[:path])
+    req.add_field 'User-Agent', 'Sensu-Monitoring-Plugin'
+    
+    headerValue = config[:header_value]
+    password = config[:password]
+    header = config[:header]
+    debug = config[:debug]
+    user = config[:user]
+    host = config[:host]
+    ssl = config[:ssl]
+
+    if ssl == true
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
+    if debug == true
+      http.set_debug_output($stdout)
+    end
+    if (user != nil and password != nil)
+      req.basic_auth user, password
+    end
+    if (header != nil and headerValue != nil)
+      req.add_field header, headerValue
+    end
+    
+    res = http.request(req) # make the connection
+  
+    case res.code
+    when "200"
+        res.body
+    else
+        critical message("Error: #{res.code} recieved from #{host}.")
+    end
   end
 end # end of class
