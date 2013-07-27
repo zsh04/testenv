@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby -w
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/metric/cli'
@@ -78,9 +78,7 @@ class ZedStats < Sensu::Plugin::Metric::CLI::Graphite
 
   def run
     timestamp = Time.now.to_i
-    exitStatus = 0
     stats = {}
-    msg = []
 
     value = JSON.parse getJsonfromApi
     value.each do |k,v|
