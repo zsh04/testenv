@@ -1,4 +1,5 @@
-#!/usr/bin/env ruby
+#!env ruby
+#/opt/sensu/embedded/bin/ruby
 
 # PubApi monitoring tool
 # ===
@@ -67,6 +68,7 @@ class PubApiCheck < Sensu::Plugin::Check::CLI
 
   option :debug,
     :short => "-d",
+    :long => "--debug",
     :boolean => true, 
     :description => "Debug mode",
     :default => false
@@ -87,32 +89,48 @@ class PubApiCheck < Sensu::Plugin::Check::CLI
     msg = []
 
     value = JSON.parse getJsonfromApi # call the api and slurp all results
-    value.each do |k,v|
-      stats[k] = v
+    value.each do
+      |k,v| stats[k] = v
     end
     @apiMetrics = {
       'pubapi'=> stats
     }
 
     # find the stats for specific metrics in the apiMetrics hash
-    scannerCyclefinish = getMetricifExists('wl.scanner.cycle','lastFinishSec') # this attr does not appear in the json until the scanner succeeds for the first time
-    scannerReadfailure = getMetricifExists('wl.scanner.read.failure.count','lastFinishSec') # scannerReadfailure does not exist until the condition has occured at least once
+    scannerCycleFinish = getMetricifExists('wl.scanner.cycle','lastFinishSec')
+    scannerReadFailure = getMetricifExists('wl.scanner.read.failure.count','lastFinishSec')
+    catalogCacheUpdate = getMetricifExists('wl.catalog.cache.update','lastFinishSec') 
+    catalogCacheUpdateFailures = getMetricifExists('wl.catalog.cache.update.failures','lastFinishSec') 
 
     if config[:debug] == true
-      p "scannerCyclefinish = #{scannerCyclefinish}"
-      p "scannerReadfailure = #{scannerReadfailure}"
+      p "scannerCycleFinish = #{scannerCycleFinish}"
+      p "scannerReadFailure = #{scannerReadFailure}"
+      p "catalogCacheUpdate = #{catalogCacheUpdate}"
+      p "catalogCacheUpdateFailures = #{catalogCacheUpdateFailures}"
     end
   
     # assay section
-    if scannerCyclefinish 
-      if (timestamp - 3600) > scannerCyclefinish
+    if scannerCycleFinish 
+      if (timestamp - 3600) > scannerCycleFinish
         msg << 'Scanner finish time is older than one hour: The scanner may be hung.'
         exitStatus += 1
       end
     end
-    if (scannerReadfailure and scannerCyclefinish)
-      if scannerReadfailure > scannerCyclefinish
+    if (scannerReadFailure and scannerCycleFinish)
+      if scannerReadFailure > scannerCycleFinish
         msg << 'Scanner read failure finish time is newer that scanner finish time: There may be read errors.'
+        exitStatus += 1
+      end
+    end
+    if catalogCacheUpdate
+      if (timestamp - 3600) > catalogCacheUpdate
+        msg << 'Cache update finish time is older than one hour.'
+        exitStatus += 1
+      end
+    end
+    if (catalogCacheUpdateFailures and catalogCacheUpdate)
+      if catalogCacheUpdateFailures > catalogCacheUpdate
+        msg << 'Cache failure.'
         exitStatus += 1
       end
     end
@@ -163,9 +181,9 @@ class PubApiCheck < Sensu::Plugin::Check::CLI
   
     case res.code
     when "200"
-      res.body
+        res.body
     else
-      critical message("Error: #{res.code} recieved from #{host}.")
+        critical message("Error: #{res.code} recieved from #{host}.")
     end
   end
 end # end of class
