@@ -22,12 +22,13 @@ def g_convert(g)
     puts "please enter only a number: "
     g = gets.chomp
     end
+    g = g.to_i
     return g
 end
 
 def guess_check_against(guess,g,max)    
          until !guess.include?(g) && g.between?(0,max)
-	       puts "Oops, We encountered an error, please make sure to enter a different guess: "
+	       puts "Oops, We encountered an error, please make sure to enter a different guess between 0 " + max.to_s + " : "
  	       g = gets.chomp
  	       check_g_number(g)
  	       g = g_convert(g)
