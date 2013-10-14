@@ -34,29 +34,11 @@ daily = time.take(1)
 daily = daily.join.to_i
 daily = Time.at(daily)
 avg = avg.round(2)
-#printf "%-90s %-15s %-10s\n", target, daily.to_date, avg
+printf "%-90s %-15s %-10s\n", target, daily.to_date, avg
 avg = ["#{avg}"]
 daily = ["#{daily.to_date}"]
 target = ["#{target}"]
 
-def avg_to_csv(avg)
-	CSV.open("test.csv",'wb') do |csv|
-	csv << ["#{avg}"]
-	return csv
 end
-
-def daily_to_csv(daily)
-	CSV.open("test.csv",'wb') do |csv|
-	csv << ["#{daily}"]
-end
-
-complete_hash = {}
-complete_hash["#{daily}"] = target
-complete_hash["#{target}"] =  avg
-p complete_hash.class
-complete_hash = complete_hash.to_csv
-p complete_hash
-end
-
 
 
