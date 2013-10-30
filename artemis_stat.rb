@@ -79,9 +79,13 @@ class ZedStats < Sensu::Plugin::Metric::CLI::Graphite
   def run
     timestamp = Time.now.to_i
     stats = {}
+ 
+    array = %w[ ExchangesTotal ExchangesFailed MeanProcessingTime ]
 
     apiMetrics = JSON.parse getJsonfromApi
-    puts apiMetrics['value']
+    apiMetrics['value'].each do |k,v|
+       output "#{k}:#{v}" if array.include?(k)
+    end
     ok
 
   end
