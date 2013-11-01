@@ -7,7 +7,7 @@ require 'net/http'
 require 'openssl'
 require 'pp'
 
-class ZedStats < Sensu::Plugin::Metric::CLI::Graphite
+class ArtemisStats < Sensu::Plugin::Metric::CLI::Graphite
 
   option :host,
     :short => "-H HOST",
@@ -75,19 +75,25 @@ class ZedStats < Sensu::Plugin::Metric::CLI::Graphite
     :show_options => true,
     :boolean => true,
     :exit => 0
+  
+  option :attributes,
+    :short => "-a attributes",
+    :long => "--attributes attributes",
+    :description => "The attributes that need to be checked"
+  
+  option :crit,
+    :short => "-c ",
+    :long => "--crit Critical",
+    :description => "Alerting A Critical Status",
+    :default => 0
 
   def run
-    timestamp = Time.now.to_i
-    stats = {}
- 
-    array = %w[ ExchangesTotal ExchangesFailed MeanProcessingTime ]
-
+    atr = config[:attributes].split(',')
     apiMetrics = JSON.parse getJsonfromApi
     apiMetrics['value'].each do |k,v|
-       output "#{k}:#{v}" if array.include?(k)
+      output "#{k}#{v}"  if atr.include?(k)
     end
     ok
-
   end
 
   def getJsonfromApi
@@ -100,6 +106,7 @@ class ZedStats < Sensu::Plugin::Metric::CLI::Graphite
     user = config[:user]
     host = config[:host]
     ssl = config[:ssl]
+    attributes = config[:attributes]
 
     http = Net::HTTP.new(host, port)
     req = Net::HTTP::Get.new(path)
@@ -118,7 +125,7 @@ class ZedStats < Sensu::Plugin::Metric::CLI::Graphite
     if (header != nil and headerValue != nil)
       req.add_field header, headerValue
     end
-
+    
     res = http.request(req) # make the connection
 
     case res.code
