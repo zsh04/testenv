@@ -1,0 +1,149 @@
+<!--
+#reportType comparisonResult
+#reportLabel Standard Comparison Report
+#reportAbstract Report with almost all measured details, but without response time diagrams per URL. A4 landscape format.
+#reportSortPosition 13
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title><!-- @@dfischer.report.ComparisonReportTitleSSSI() --></title>
+        <link rel="stylesheet" type="text/css" media="print" href="report.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="reportScreen.css" />
+    </head>
+
+    <body>
+		<!-- START OF REPORT - BEFORE FIRST PAGE -->
+
+	    <!-- set footer for first page -->
+		<div id="footer_firstPage" style=""><!-- @@dfischer.report.FirstPageFooterSSSI() --></div>
+
+		<!-- set header and footer for all other pages -->
+        <div id="header" style=""><!-- @@dfischer.report.ComparisonReportTitleSSSI() --></div>
+        <div id="footer" style="">Page <span id="pagenumber"/> of <span id="pagecount"/></div>
+
+		<!-- reset chapter numbers of document -->
+		<!-- @@dfischer.report.ReportTitleLevel_Reset_SSSI() -->
+
+		<!-- enable user comments - start marker -->
+		<!-- @@dfischer.report.ReportUserCommentStartSSSI() -->
+
+
+		<!-- COVER SHEET / FRONT PAGE -->
+		<!-- ======================== -->
+
+		<!-- display report title -->
+		<div class="title_1"><!-- @@dfischer.report.ComparisonReportTitleSSSI() --></div>
+
+		<br />&#160;<br />
+
+		<!-- display load test program name -->
+		<div class="title_1_red">Load Test: <!-- @@dfischer.report.ComparisonReportLoadTestProgramNameSSSI("[mixed tests]") --></div>
+
+		&#160;
+
+		<!-- display conducted by -->
+		<div class="title_2_red"><!-- @@dfischer.report.ConductedBySSSI("Conducted by: ","true",30) --></div>
+
+
+		<!-- start of table around first page test results (left) and logo (right) -->
+		<table border="0" cellpadding="0" cellspacing="0" width="100%"><tr>
+		<td valign="top" width="60%">
+
+
+		<!-- display inner table with test result overview -->
+		<table border="0" cellpadding="1" cellspacing="0" style="border-collapse: collapse; margin-bottom: 20px;">
+		<tr>
+		<td class="blackBorderNowrap" bgcolor="#FFCC00"><b>No.</b></td>
+		<td class="blackBorderNowrap" bgcolor="#FFCC00"><b>Start Date</b></td>
+		<td class="blackBorderNowrap" bgcolor="#FFCC00"><b>Test</b></td>
+		<td class="blackBorderNowrap" bgcolor="#FFCC00"><b>User</b></td>
+		<td class="blackBorderNowrap" bgcolor="#FFCC00"><b>AV Time / Page</b></td>
+		<td class="blackBorderNowrap" bgcolor="#FFCC00"><b>Failures</b></td>
+		</tr>
+		<!-- @@dfischer.report.ComparisonReportLoadTestListFrontPageSSSI("true") -->
+		</table>
+
+		<br />&#160;<br />
+
+		<!-- allow to enter summary comment on cover sheet -->
+		<div><!-- @@dfischer.report.ReportUserCommentAddSSSI("Summary:", "userCommentComparisonSummary",90,9,0,0,"true") --></div>
+
+		</td>
+		<td width="100%"><img src="XXXXXX.gif" width="4" height="1" alt="" /></td>
+		<td valign="top" align="right">
+
+		<!-- display logo -->
+		<img src="<!-- @@dfischer.report.LogoSSSI() -->" alt="" width="350" height="300" />
+
+		</td>
+		<td><img src="XXXXXX.gif" width="50" height="1" alt="" /></td>
+
+		<!-- end of table around first page test results (left) and logo (right) -->
+		</tr></table>
+
+
+		<!-- CHAPTER: Test Scenario (free text) -->
+		<!-- ================================== -->
+
+		<!-- Display Test Scenario Chapter with User Comment Field, page break already inserted by title_level_1 style -->
+		<!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("true",1,"Test Scenario","title_level_1","false",0,"Description of Test Environment and Test Procedure:","true","userCommentComparisonTestScenario","165","16") -->
+
+
+		<!-- CHAPTER: Response Time per Page -->
+		<!-- =============================== -->
+
+		<!-- main chapter title: Response Time Comparison per Page -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Response Time Comparison per Page") --></div>
+
+		<!-- display average reponse time diagrams per page -->
+		<div class="title_level_2"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Response Time per Page - Average") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentComparisonAvResponseTimePerPageDiagrams",180,6,0,20) -->
+		<!-- @@dfischer.report.ComparisonReportAvResponseTimePerPageDiagramsSSSI("Page $1 to $2", "", 5, 1, -1, -1, 30) -->
+
+		<!-- display 90% percentile reponse time diagrams per page -->
+		<!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("false",2,"Response Time per Page - 90% Percentile","title_level_2","true",0,"Comment:","false","userCommentComparison90PercResponseTimePerPageDiagrams",180,6,0,20,"hasPagePercentile") -->
+		<!-- @@dfischer.report.ComparisonReport90PercResponseTimePerPageDiagramsSSSI("true","Page $1 to $2", "", 5, 1, -1, -1, 30) -->
+
+
+		<!-- CHAPTER: Performance Overview -->
+		<!-- ============================= -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Performance Overview") --></div>
+		<!-- display load test list (again) -->
+		<!-- @@dfischer.report.ComparisonReportLoadTestListSSSI("true") -->
+		&#160;<br />
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentComparisonPerformanceOverview",180,6,0,20) -->
+		
+		<!-- display performance overview list and performance overview diagrams -->
+		<!-- @@dfischer.report.ComparisonReportPerformanceOverviewTableSSSI() -->
+		<br />&#160;<br />
+		<!-- @@dfischer.report.ComparisonReportPerformanceOverviewDiagramsSSSI() -->
+
+		
+		<!-- CHAPTER: Errors -->
+		<!-- =============== -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Errors") --></div>
+		<!-- display load test list (again) -->
+		<!-- @@dfischer.report.ComparisonReportLoadTestListSSSI("true") -->
+		&#160;<br />
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentComparisonSessionFailures",180,6,0,20) -->
+		
+		<!-- display session failure list and session failure diagrams -->
+		<!-- @@dfischer.report.ComparisonReportSessionFailureTableSSSI() -->
+		<br />&#160;<br />
+		<!-- @@dfischer.report.ComparisonReportSessionFailureDiagramsSSSI() -->
+
+
+		<!-- LAST CHAPTER: Conclusion -->
+		<!-- ======================== -->
+
+		<!-- Display Conclusion Chapter with User Comment Field, page break already inserted by title_level_1 style -->
+		<!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("true",1,"Conclusion","title_level_1","false",0,"Conclusion:","true","userCommentComparisonConclusion","165","16") -->
+		
+
+		<!-- END OF REPORT - AFTER LAST PAGE -->
+		<!-- enable user comments - end marker -->
+		<!-- @@dfischer.report.ReportUserCommentEndSSSI() -->
+
+	</body>
+</html>

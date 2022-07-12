@@ -1,0 +1,423 @@
+<!--
+#reportType detailResult
+#reportLabel Standard Detail Report
+#reportAbstract Report with almost all measured details, but without top time consuming URL statistic, without response time diagrams per URL and without detailed error snapshot information. A4 landscape format.
+#reportSortPosition 13
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title><!-- @@dfischer.report.DetailReportTitleSSSI() --></title>
+        <link rel="stylesheet" type="text/css" media="print" href="report.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="reportScreen.css" />
+    </head>
+
+    <body>
+		<!-- START OF REPORT - BEFORE FIRST PAGE -->
+	
+	    <!-- set footer for first page -->
+		<div id="footer_firstPage" style=""><!-- @@dfischer.report.FirstPageFooterSSSI() --></div>
+
+		<!-- set header and footer for all other pages -->
+        <div id="header" style=""><!-- @@dfischer.report.DetailReportTitleSSSI() --></div>
+        <div id="footer" style="">Page <span id="pagenumber"/> of <span id="pagecount"/></div>
+
+		<!-- reset chapter numbers of document -->
+		<!-- @@dfischer.report.ReportTitleLevel_Reset_SSSI() -->
+		
+		<!-- enable user comments - start marker -->
+		<!-- @@dfischer.report.ReportUserCommentStartSSSI() -->
+		
+
+		<!-- COVER SHEET / FRONT PAGE -->
+		<!-- ======================== -->
+
+		<!-- display report title -->
+		<div class="title_1"><!-- @@dfischer.report.DetailReportTitleSSSI() --></div>
+
+		<br />&#160;<br />
+
+		<!-- display load test program name -->
+		<div class="title_1_red">Load Test: <!-- @@dfischer.report.DetailReportLoadTestProgramNameSSSI() --></div>
+
+		<!-- display annotation -->
+		<div class="title_2_red"><!-- @@dfischer.report.DetailReportAnnotationSSSI("Annotation: ", "true") --></div>
+
+		&#160;
+
+		<!-- display conducted by -->
+		<div class="title_2_red"><!-- @@dfischer.report.ConductedBySSSI("Conducted by: ", "true") --></div>
+
+
+		<!-- start of table around first page test results (left) and logo (right) -->
+		<table border="0" cellpadding="0" cellspacing="0"><tr>
+		<td valign="top" width="60%">
+
+		<br />&#160;<br />
+
+		<div class="title_3" style="line-height: 17pt">
+		<!-- concurrent users -->
+		Concurrent User: <!-- @@dfischer.report.DetailReportConcurrentUserSSSI() --> <br />
+
+		<!-- test start date -->
+		Test Start: <!-- @@dfischer.report.DetailReportTestStartDateSSSI() --> (<!-- @@dfischer.report.DetailReportTimeZoneSSSI() -->) <br />
+
+		<!-- test duration -->
+		Test Duration: <!-- @@dfischer.report.DetailReportTestDurationSSSI() -->
+		</div>
+
+		<br />
+
+		<div class="title_3" style="line-height: 17pt">
+		<!-- average response time per page -->
+		Average Response Time per Page: <!-- @@dfischer.report.DetailReportAvResponseTimePerPageSSSI() --> seconds <br />
+
+		<!-- web transaction rate -->
+		Server Throughput: <!-- @@dfischer.report.DetailReportWebTransactionRateSSSI() --> URL calls per second <br />
+
+		<!-- session failure rate -->
+		Session Failure Rate: <!-- @@dfischer.report.DetailReportSessionFailureRateSSSI() --> % <br />
+
+		<!-- url error rate -->
+		URL Error Rate: <!-- @@dfischer.report.DetailReportUrlErrorRateSSSI() --> % <br />
+
+		<!-- http keep-alive efficiency -->
+		HTTP Keep-Alive Efficiency: <!-- @@dfischer.report.DetailReportHttpKeepAliveEfficiencySSSI() --> %
+		</div>
+
+		<br />
+
+		<!-- allow to enter summary comment on cover sheet -->
+		<div><!-- @@dfischer.report.ReportUserCommentAddSSSI("Summary:", "userCommentSummary",90,9,0,0,"true") --></div>
+
+		</td>
+		<td><img src="XXXXXX.gif" width="50" height="1" alt="" /></td>
+		<td valign="top">
+
+		<!-- display logo -->
+		<img src="<!-- @@dfischer.report.LogoSSSI() -->" alt="" width="350" height="300" />
+
+		</td>
+		<td><img src="XXXXXX.gif" width="50" height="1" alt="" /></td>
+
+		<!-- end of table around first page test results (left) and logo (right) -->
+		</tr></table>
+
+
+		<!-- CHAPTER: Test Scenario -->
+		<!-- ====================== -->
+
+		<!-- main chapter title: Test Scenario  -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Test Scenario") --></div>
+
+		<!-- start of table around user comment for test scenario -->
+		<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+		<tr><td valign="top">
+
+		<!-- Initial Status -->
+		<table border="0" cellpadding="1" cellspacing="0" style="border-collapse: collapse; margin-bottom: 20px;">
+		<tr><td class="blackBorderNowrap" bgcolor="#81B5E5" colspan="2"><b>Initial Status</b></td></tr>
+		<tr><td class="blackBorderNowrap">Test Start Date:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportTestStartDateSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap">Load Test Program:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportLoadTestProgramNameSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap" valign="top">Load Source Host(s):</td><td class="blackBorderNowrap" valign="top"><!-- @@dfischer.report.DetailReportLoadSourceHostsSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap">Load Source OS:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportLoadSourceOsSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap" valign="top">Target Host(s):</td><td class="blackBorderNowrap" valign="top"><!-- @@dfischer.report.DetailReportTargetHostsSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap">Applied HTTP Version:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportAppliedHttpVersionSSSI() --></td></tr>
+		</table>
+		
+		<!-- Test Input Parameter -->
+		<table border="0" cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+		<tr><td class="blackBorderNowrap" bgcolor="#81B5E5" colspan="2"><b>Test Input Parameter</b></td></tr>
+		<tr><td class="blackBorderNowrap">Concurrent User:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportConcurrentUserSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap">Planned Test Duration:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportPlannedTestDurationSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap">Planned Loops per User:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportPlannedLoopsPerUserSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap">Startup Delay per User:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportStartupDelayPerUserSSSI() --> millisec</td></tr>
+		<tr><td class="blackBorderNowrap">Max. Parallel Threads per User:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportMaxParallelThreadsPerUserSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap">Request Timeout per URL:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportRequestTimeoutPerUrlSSSI() --> sec</td></tr>
+		<tr><td class="blackBorderNowrap">Statistic Sampling Interval:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportSamplingIntervalSSSI() --> sec</td></tr>
+		<tr><td class="blackBorderNowrap">Additional Sampling Rate per Web Page Call:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportSamplingRatePerWebPageSSSI() --> %</td></tr>
+		<tr><td class="blackBorderNowrap">Additional Sampling Rate per URL Call:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportSamplingRatePerUrlSSSI() --> %</td></tr>
+		</table>
+		
+		<!-- end of table around user comment for test scenario -->
+		</td>
+		<td><img src="XXXXXX.gif" width="70" height="1" alt="" /></td>
+		<td valign="top"><!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentTestScenario",100,20) --></td>
+		</tr></table>
+
+		<!-- User Input Fields  -->
+		<!-- @@dfischer.report.DetailReportDisplayUserInputFields("User Input Fields", "#81B5E5", "20px", "blackBorder") -->
+
+		<!-- Warnings -->
+		<!-- @@dfischer.report.DetailReportDisplayWarningsSSSI("Warnings", "#BBBBBB", "20px") -->
+
+		<!-- Real Time Comments -->
+		<!-- @@dfischer.report.DetailReportDisplayRealTimeCommentsSSSI("Real Time Comments", "#BBBBBB", "20px") -->
+
+		&#160;<br />
+
+		<!-- Data Source -->
+		<div class="title_level_2"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Data Source") --></div>
+		<div class="red_text"><!-- @@dfischer.report.DetailReportDisplayDataSourceSSSI() --></div>
+
+
+		<!-- CHAPTER: Test Result Summary -->
+		<!-- ============================ -->
+
+		<!-- main chapter title: Test Result Summary  -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Test Result Summary") --></div>
+
+		<!-- Test Duration and Transmitted Bytes -->
+		Real Test Duration: <!-- @@dfischer.report.DetailReportTestDurationSSSI() --><br />
+		Total Transmitted Bytes: <!-- @@dfischer.report.DetailReportTotalTransmittedBytesSSSI() --> MB<br />
+		&#160;<br />
+
+		<!-- start of table around user comment for test result summary -->
+		<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+		<tr><td valign="top">
+
+		<!-- Measured Results: URL Calls -->
+		<table border="0" cellpadding="1" cellspacing="0" style="border-collapse: collapse; margin-bottom: 25px;">
+		<tr><td class="blackBorderNowrap" bgcolor="#FFCC00" colspan="2"><b>Measured Results: URL Calls</b></td></tr>
+		<tr><td class="blackBorderNowrap">Total Passed URL Calls:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportPassedUrlCallsSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap">Total Failed URL Calls:</td><!-- @@dfischer.report.DetailReportFailedUrlCallsSSSI("true","blackBorderNowrap") --></tr>
+        <tr><td class="blackBorderNowrap">Average TCP Socket Connect Time:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportAvNetworkConnectTimeSSSI() --> millisec</td></tr>
+        <tr><td class="blackBorderNowrap">Average SSL&#47;TLS Handshake Time:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportAvSSLHandshakeTimeSSSI() --> millisec</td></tr>
+		<tr><td class="blackBorderNowrap">HTTP Keep-Alive Efficiency:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportHttpKeepAliveEfficiencySSSI() --> % (re-used network connections)</td></tr>
+        <tr><td class="blackBorderNowrap">SSL&#47;TLS Session Cache Efficiency:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportSslSessionCacheEfficiencySSSI() --> % (re-used SSL&#47;TLS sessions)</td></tr>
+		</table>
+
+		<!-- Measured Results: per Single User - per Loop -->
+		<table border="0" cellpadding="1" cellspacing="0" style="border-collapse: collapse; margin-bottom: 25px;">
+		<tr><td class="blackBorderNowrap" bgcolor="#FFCC00" colspan="2"><b>Measured Results: per Single User - per Loop</b></td></tr>
+		<tr><td class="blackBorderNowrap">Average Session Time per Loop:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportAvSessionTimePerLoopSSSI() --> sec/loop</td></tr>
+		<tr><td class="blackBorderNowrap">URL Response Time Summary:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportUrlResponseTimeSummarySSSI() --> sec/loop (accumulated user's wait time)</td></tr>
+		<tr><td class="blackBorderNowrap">Page Break Delay Summary:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportPageBreakDelaySummarySSSI() --> sec/loop (accumulated user's think time)</td></tr>
+		<tr><td class="blackBorderNowrap">Average Response Time per Page:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportAvResponseTimePerPageSSSI() --> sec/page (user's wait time per page)</td></tr>
+		<tr><td class="blackBorderNowrap">Network Throughput per User:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportNetworkThroughputPerUserSSSI() --> Kbytes/sec</td></tr>
+		</table>
+
+		<!-- Overall Test Results -->
+		<table border="0" cellpadding="1" cellspacing="0" style="border-collapse: collapse;">
+		<tr><td class="blackBorderNowrap" bgcolor="#FFCC00" colspan="2"><b>Overall Test Results</b></td></tr>
+		<tr><td class="blackBorderNowrap">Web Transaction Rate:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportWebTransactionRateSSSI() --> URL calls/sec (total server throughput)</td></tr>
+		<tr><td class="blackBorderNowrap">Average Outstanding HTTP/S Requests:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportAvOutstandingRequestsSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap">Session Failure Rate:</td><!-- @@dfischer.report.DetailReportSessionFailureRateSSSI("true","blackBorderNowrap") --></tr>
+		<tr><td class="blackBorderNowrap">Total Passed Loops:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportPassedLoopsSSSI() --></td></tr>
+		<tr><td class="blackBorderNowrap">Total Failed Loops:</td><!-- @@dfischer.report.DetailReportFailedLoopsSSSI("true","blackBorderNowrap") --></tr>
+		<tr><td class="blackBorderNowrap">Average Network Throughput:</td><td class="blackBorderNowrap"><!-- @@dfischer.report.DetailReportTotalNetworkThroughputSSSI() --> Mbit/sec</td></tr>
+		</table>
+		
+		<!-- end of table around user comment for test result summary -->
+		</td>
+		<td><img src="XXXXXX.gif" width="70" height="1" alt="" /></td>
+		<td valign="top"><!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentTestResultSummary",70,22) --></td>
+		</tr></table>
+
+
+		<!-- CHAPTER: HTTP Response code Statistics -->
+		<!-- ================================ -->
+
+		<!-- main chapter title: HTTP Response code Statistics  -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("HTTP Response Code Statistics") --></div>
+
+		<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+			<tr>
+				<td valign="top">
+					<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentHttpResponseCodeStatistics",180,6,10,20) -->
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">
+
+					<!-- HTTP Response code Statistics -->
+					<!-- @@dfischer.report.DetailReportHttpResponseCodeStatisticsSSSI(("10px","20px", "[No HTTP Response Code Statistic]")) -->
+				</td>
+			</tr>
+
+			<!-- end of table around user comment for HTTP Response code statistics -->
+			<tr>
+				<td><img src="XXXXXX.gif" width="70" height="1" alt="" /></td>
+			</tr>
+		</table>
+
+
+		<!-- CHAPTER: Response Times per Page -->
+		<!-- ================================ -->
+
+		<!-- main chapter title: Response Times per Page  -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Response Times per Page") --></div>
+		
+		<!-- Response Time per Page - Average -->
+		<!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("false",2,"Response Time per Page - Average","title_level_2","false",0,"Comment:","false","userCommentAvResponseTimePerPageDiagrams",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportAvResponseTimePerPageDiagramsSSSI("false","-1","-1","20px") -->
+		
+		<!-- Response Time per Page - 90% Percentile -->
+		<!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("false",2,"Response Time per Page - 90% Percentile","title_level_2","true",0,"Comment:","false","userComment90PercResponseTimePerPageDiagrams",180,6,0,20,"hasPagePercentile") -->
+		<!-- @@dfischer.report.DetailReport90PercResponseTimePerPageDiagramsSSSI("true","-1","-1","20px") -->
+
+		<!-- Response Time per Page - Details -->
+		<!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("false",2,"Response Time per Page - Details","title_level_2","true",0,"Comment:","false","userCommentResponseTimePerPageDetailDiagrams",180,6,0,20,"hasPagePercentile") -->
+		<!-- @@dfischer.report.DetailReportResponseTimePerPageDetailDiagramsSSSI("true","-1","-1","24px",2,1) -->
+
+		
+		<!-- CHAPTER: Top Time-Consuming URLs -->
+		<!-- ================================ -->
+
+		<!-- main chapter title: Top Time-Consuming URLs -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Top Time-Consuming URLs") --></div>
+		
+		<!-- Top Time-Consuming URLs - Average Response Time -->
+		<div class="title_level_2"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Top Time-Consuming URLs - Average Response Time") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentTestTopTimeConsumingURLsAverageResponseTime",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportAvTopTimeConsumingUrlDiagramSSSI("false","-1","-1","20px") -->
+
+		<!-- Top Time-Consuming URLs - Response Time per Media Type -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Top Time-Consuming URLs - Response Time per Media Type") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentTestTopTimeConsumingResponseTimePerMimeType",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportResponseTimeTypePerMimeTypeDiagramSSSI("false","-1","-1","20px") -->
+
+		
+		<!-- CHAPTER: Results per URL Call -->
+		<!-- ============================= -->
+
+		<!-- main chapter title: Results per URL Call -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Results per URL Call") --></div>
+
+		<!-- Results per URL Call (Overview) -->
+		<div class="title_level_2"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Results per URL Call (Overview)") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentTestResultPerUrlOverview",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportTestResultPerUrlOverviewSSSI("#81B5E5","#BBBBBB") -->
+
+		<!-- Results per URL Call (Details) -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Results per URL Call (Details)") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentTestResultPerUrlDetails",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportTestResultPerUrlDetailsSSSI("#81B5E5","#BBBBBB") -->
+
+
+		<!-- CHAPTER: Browser Cache Statistics -->
+		<!-- ================================ -->
+
+		<!-- main chapter title: Browser Cache Statistics  -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Browser Cache Statistics") --></div>
+
+		<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+			<tr>
+				<td valign="top">
+					<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentBrowserCacheStatistics",180,6,10,20) -->
+				</td>
+			</tr>
+			<tr>
+				<td valign="top">
+
+					<!-- Browser Cache Statistics -->
+					<!-- @@dfischer.report.DetailReportBrowserCacheStatisticsSSSI("10px","20px", "[No Browser Cache Statistic]") -->
+				</td>
+			</tr>
+
+			<!-- end of table around user comment for Browser Cache statistics -->
+			<tr>
+				<td><img src="XXXXXX.gif" width="70" height="1" alt="" /></td>
+			</tr>
+		</table>
+
+	
+		<!-- CHAPTER: Performance Diagrams -->
+		<!-- ============================= -->
+
+		<!-- main chapter title: Performance Diagrams -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Performance Diagrams") --></div>
+		
+		<!-- Concurrent Users -->
+		<div class="title_level_2"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Concurrent Users") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentDiagramConcurrentUsers",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportConcurrentUserDiagramSSSI() --><br />
+		
+		<!-- Session Time -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Session Time") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentDiagramAverageSessionTime",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportAvSessionTimeDiagramSSSI() --><br />
+
+		<!-- Web Transaction Rate -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Web Transaction Rate") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentDiagramWebTransactionRate",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportWebTransactionRateDiagramSSSI() --><br />
+
+		<!-- Outstanding Requests -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Outstanding HTTP/S Requests") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentDiagramAvOutstandingRequest",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportAvOutstandingRequestDiagramSSSI() --><br />
+
+		<!-- Completed Loops -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Completed Loops (Sessions per Minute)") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentDiagramCompletedLoops",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportCompletedLoopsDiagramSSSI() --><br />
+
+		<!-- TCP Socket Connect Time" -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("TCP Socket Connect Time") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentDiagramAverageNetworkConnectTime",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportAvNetworkConnectTimeDiagramSSSI() --><br />
+
+		<!-- Overall Network Throughput -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Overall Network Throughput") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentDiagramNetworkThroughput",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportTotalNetworkThroughputDiagramSSSI() --><br />
+
+		<!-- HTTP Keep-Alive Efficiency -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("HTTP Keep-Alive Efficiency") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentDiagramKeepAliveEfficiency",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportHttpKeepAliveEfficiencyDiagramSSSI() --><br />
+
+		<!-- SSL Cache Efficiency -->
+		<!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("false",2,"SSL Cache Efficiency","title_level_2","true",0,"Comment:","false","userCommentSslCacheEfficiencyDiagram",180,6,0,20,"hasSslCacheStatistic") -->
+		<!-- @@dfischer.report.DetailReportSslCacheEfficiencyDiagramSSSI("true") -->
+
+        <!-- SSL Handshake Time -->
+        <!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("false",2,"SSL Handshake Time","title_level_2","true",0,"Comment:","false","userCommentSslHandshakeTimeDiagram",180,6,0,20,"hasSslHandshakes") -->
+        <!-- @@dfischer.report.DetailReportSslHandshakeTimeDiagramSSSI() -->
+
+        <!-- Transactions -->
+        <!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("false",2,"Transactions","title_level_2","true",0,"Comment:","false","userCommentTransactions",180,6,0,20,"hasTransactions") -->
+        <!-- @@dfischer.report.DetailReportTransactionsOverviewTableSSSI("","20px") -->
+        <!-- @@dfischer.report.DetailReportTransactionsDiagramsSSSI("-1","-1","25px","3","title_level_3","2","true","false") -->
+
+		<!--  User Defined Data Points: Diagrams -->
+		<!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("false",2,"User Defined Data Points","title_level_2","true",0,"Comment:","false","userCommentExternalMeasuredDataDiagrams",180,6,0,20,"hasExternalData") -->
+		<!-- @@dfischer.report.DetailReportExternalMeasuredDataDiagramsSSSI("-1","-1","25px","3","title_level_3","2") -->
+
+
+		<!-- CHAPTER: Errors -->
+		<!-- =============== -->
+
+		<!-- main chapter title: Errors -->
+		<div class="title_level_1"><!-- @@dfischer.report.ReportTitleLevel_1_SSSI("Errors") --></div>
+
+		<!-- Session Failures -->
+		<div class="title_level_2"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Session Failures") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentSessionFailureDiagram",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportSessionFailureDiagramSSSI() --><br />
+
+		<!-- Error Types -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Error Types") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentTopErrorTypesDiagram",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportErrorTypesTimeDiagramSSSI() --><br />
+		
+		<!-- Error Snapshots Overview  -->
+		<div class="title_level_2" style="page-break-before: always;"><!-- @@dfischer.report.ReportTitleLevel_2_SSSI("Error Snapshots Overview - Sorted by Date and Time") --></div>
+		<!-- @@dfischer.report.ReportUserCommentAddSSSI("Comment:", "userCommentErrorSnapshotsOverview",180,6,0,20) -->
+		<!-- @@dfischer.report.DetailReportErrorSnapshotsOverviewSSSI("10px","26px", "[No Error Snapshots]") -->
+		
+		
+		<!-- LAST CHAPTER: Conclusion -->
+		<!-- ======================== -->
+		
+		<!-- Display Conclusion Chapter with User Comment Field, page break already inserted by title_level_1 style -->
+		<!-- @@dfischer.report.ReportUserCommentAddWithTitleSSSI("true",1,"Conclusion","title_level_1","false",0,"Conclusion:","true","userCommentConclusion","165","16") -->
+
+
+		<!-- END OF REPORT - AFTER LAST PAGE -->
+		<!-- enable user comments - end marker -->
+		<!-- @@dfischer.report.ReportUserCommentEndSSSI() -->
+
+	</body>
+</html>

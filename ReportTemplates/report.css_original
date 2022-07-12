@@ -1,0 +1,88 @@
+@page :first { 
+size: 29.7cm 21.0cm; margin-top:1.5cm; margin-bottom:1.4cm; margin-left:1.4cm; margin-right:1.4cm;
+-fs-flow-top: "header_firstPage";
+-fs-flow-bottom: "footer_firstPage";
+border: thin solid white;
+}
+
+@page { 
+size: 29.7cm 21.0cm; margin-top:1.5cm; margin-bottom:1.4cm; margin-left:1.4cm; margin-right:1.4cm;
+-fs-flow-top: "header";
+-fs-flow-bottom: "footer";
+-fs-flow-left: "left";
+-fs-flow-right: "right";
+border: thin solid white;
+}
+
+#footer_firstPage {
+font-size: 8pt; font-family: Arial, Helvetica, sans-serif; color: black; 
+position: absolute; top: 0.3cm; left: 0;
+-fs-move-to-flow: "footer_firstPage";
+}
+
+#header {
+font-size: 8pt; font-family: Arial, Helvetica, sans-serif; color: black;
+position: absolute; top: 0.8cm; left: 0; 
+-fs-move-to-flow: "header";
+}
+
+#footer {
+font-size: 8pt; font-family: Arial, Helvetica, sans-serif; color: black; 
+position: absolute; top: 0.3cm; left: 0;
+-fs-move-to-flow: "footer";
+}
+
+#pagenumber:before {
+content: counter(page); 
+}
+
+#pagecount:before {
+content: counter(pages);  
+}
+
+        html  {background-color: #FFFFFF; }
+
+        body {
+            margin: 0px;
+	        padding: 0px;
+            background-color: white;
+            font-size: 11pt; font-family: Arial, Helvetica, sans-serif; color: black;
+        }
+		
+		.blackBorder { border-width: 1px; border-color: black; border-style: solid; padding-top: 2px; padding-bottom: 2px; padding-left: 5px; padding-right: 5px; }
+		.blackBorderNowrap { border-width: 1px; border-color: black; border-style: solid; padding-top: 2px; padding-bottom: 2px; padding-left: 5px; padding-right: 5px; white-space:nowrap; }
+		.blackBorderSmall { border-width: 1px; border-color: black; border-style: solid; padding-top: 2px; padding-bottom: 2px; padding-left: 2px; padding-right: 2px; }
+		.blackBorderSmallText { border-width: 1px; border-color: black; border-style: solid; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; font-size: 9pt; font-family: Arial, Helvetica, sans-serif; color: black; }
+		.whiteBorderSmallTextNowrap { border-width: 1px; border-color: white; border-style: solid; padding-top: 1px; padding-bottom: 1px; padding-left: 5px; padding-right: 5px; font-size: 9pt; font-family: Arial, Helvetica, sans-serif; color: black; white-space:nowrap; }
+		.noBorderNowrap {border-width: 0px; border-color: white; border-style: solid; padding: 0px; white-space:nowrap; }
+		
+		.standard_text { font-size: 11pt; font-family: Arial, Helvetica, sans-serif; color: black; }
+		.standard_text_small { font-size: 9pt; font-family: Arial, Helvetica, sans-serif; color: black; }
+		.monospace_text_small { font-size: 9pt; font-family: Courier, monospace; color: black; }
+		.monospace_text_small_red { font-size: 9pt; font-family: Courier, monospace; color: red; }
+		
+		.red_text { font-size: 11pt; font-family: Arial, Helvetica, sans-serif; color: red; }		
+		.white_text { font-size: 11pt; font-family: Arial, Helvetica, sans-serif; color: white; }
+		.white_text_small { font-size: 9pt; font-family: Arial, Helvetica, sans-serif; color: white; }
+
+		.commentCoverTable { border-width: 0px; border-color: white; border-spacing:0px; border-collapse: collapse; margin: 0px; }
+		.commentCoverTitleBorder { border-width: 0px; border-color: white; border-style: solid; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; background-color: #FFFFFF; font-size: 12pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: red; }
+		.commentCoverTextBorder { border-width: 0px; border-color: white; border-style: solid; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; background-color: #FFFFFF; font-size: 12pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: red; }
+		
+		.commentTable { border-width: 0px; border-color: white; border-spacing:0px; border-collapse: collapse; margin: 0px; }
+		.commentTitleBorder { border-width: 1px; border-color: white; border-style: solid; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; background-color: #FFFFFF; font-weight: bold;}
+		.commentTextBorder { border-width: 1px; border-color: white; border-style: solid; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; background-color: #FFFFFF; }
+						
+		.title_1 { font-size: 32pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: black; }
+		.title_1_red { font-size: 32pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: red; }
+		.title_2_red { font-size: 18pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: red; }
+		.title_3 { font-size: 12pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: black; }
+		.title_3_red { font-size: 12pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: red; }
+		
+		.title_level_1 { font-size: 14pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: black; page-break-before: always; margin-bottom: 10px; }
+		.title_level_2 { font-size: 12pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: black; margin-bottom: 9px; }
+		.title_level_3 { font-size: 11pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: black; margin-bottom: 9px; }
+		.title_appendix { font-size: 14pt; font-weight:bold; font-family: Arial, Helvetica, sans-serif; color: black; page-break-before: always; margin-bottom: 10px; }
+
+		
+

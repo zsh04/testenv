@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<loadTestTemplate>
+  <proxySnifferVersion>V7.0-B</proxySnifferVersion>
+  <loadTestProgramPath>/Applications/ZebraTester/MyTests/ChainAPIsExample.class</loadTestProgramPath>
+  <startFromExecAgentName>Local Exec Agent</startFromExecAgentName>
+  <startFromClusterName></startFromClusterName>
+  <isPureJUnitLoadTest>false</isPureJUnitLoadTest>
+  <executionPlanFilePath></executionPlanFilePath>
+  <concurrentUsers>1</concurrentUsers>
+  <testDuration>60</testDuration>
+  <loopsPerUser>0</loopsPerUser>
+  <pacingPerLoop>0</pacingPerLoop>
+  <startupDelayPerUser>200</startupDelayPerUser>
+  <downlinkBandwidth>0</downlinkBandwidth>
+  <uplinkBandwidth>0</uplinkBandwidth>
+  <requestTimeout>60</requestTimeout>
+  <maxErrorSnapshots>-20</maxErrorSnapshots>
+  <statisticSamplingInterval>15</statisticSamplingInterval>
+  <percentilePageSamplingPercent>100</percentilePageSamplingPercent>
+  <percentileUrlSamplingPercent>20</percentileUrlSamplingPercent>
+  <percentileUrlSamplingPercentAddOption>0</percentileUrlSamplingPercentAddOption>
+  <debugOptions></debugOptions>
+  <additionalOptions></additionalOptions>
+  <sslOptions>all</sslOptions>
+  <pmaTemplateFileName></pmaTemplateFileName>
+  <testRunAnnotation></testRunAnnotation>
+  <userAgent></userAgent>
+  <browserLan>en</browserLan>
+  <enableBrowserCache>false</enableBrowserCache>
+  <checkNewVersion>false</checkNewVersion>
+  <cacheHTML>false</cacheHTML>
+  <newVUPerLoop>false</newVUPerLoop>
+  <browserCacheOptions></browserCacheOptions>
+  <userInputFields>
+    <userInputField>
+      <name>key</name>
+      <value>AIzaSyCRJPrlrM8B8YdipQCSH2Y7XzZBAilbNgI</value>
+    </userInputField>
+    <userInputField>
+      <name>address</name>
+      <value>10853%20rose%20ave,%20los%20angeles,%20ca%2090034</value>
+    </userInputField>
+    <userInputField>
+      <name>consumerKey</name>
+      <value>8Iqygshjq1fzpeh8vua8wNeCx</value>
+    </userInputField>
+    <userInputField>
+      <name>ConsumerSecret</name>
+      <value>qbfBhkY061cJnO4HlVdVjdUm7QtNg0hsVJcWcVCklv7YOOK1bs</value>
+    </userInputField>
+    <userInputField>
+      <name>twitterHandler</name>
+      <value>ZshMalloc</value>
+    </userInputField>
+  </userInputFields>
+</loadTestTemplate>
